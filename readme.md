@@ -11,15 +11,15 @@ DICT keyname:
 Example:
 ```
 ARRAY keyname:
---:value
+--value
 ```
 **To state something (math or string), first put the keyname and then -- on a line below the keyname (you can't skip a line)**
 Example:
 ```
 STATE keyname:
---:6 * 7
+--6 * 7
 STATE keyname:
---:%string1 + %string2
+--%string1 + %string2
 ```
 Note: *it is best to user variables when adding strings together since spaces will be messed up*
 #Valid Signs:
@@ -58,11 +58,11 @@ current_user:%user.name
 **FOR ARRAYS**
 ```
 ARRAY numbers:
---:zero
---:one
---:two
---:three
---:four
+--zero
+--one
+--two
+--three
+--four
 current_number:%numbers.0
 ```
 *"current_number" would then equal "zero"*
@@ -77,20 +77,20 @@ DICT CONTENT:
 --l1:the volume is %VOLUME
 --l2:%VOLUME
 ARRAY arr:
---:Item
---:%ID
+--Item
+--%ID
 not:in %CONTENT.l1
 another:%arr.1
 test:INPUT
 PRINT:hello, %CONTENT.l1
 STATE a:
---:%ID + %VOLUME
+--%ID + %VOLUME
 STATE b:
---:%ID + %ID ^ 3
+--%ID + %ID ^ 3
 STATE c:
---:80 * 34 / 2
+--80 * 34 / 2
 STATE d:
---:80 - 79
+--80 - 79
 ```
 
 ## When using python there is a module to load data (config.py) AN EXAMPLE USAGE IS LOCATED IN "test.py"

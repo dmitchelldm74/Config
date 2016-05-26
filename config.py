@@ -69,7 +69,9 @@ OPERATORS = {
     "*":__mul,
     "^":__pow
 }
-def __isOperator(op):
+def __isOperator(op, var):
+    if var == False:
+        return False
     try:
         OPERATORS[op]
         return True
@@ -91,12 +93,22 @@ def __ld(filename, var):
             for line in infile:
                 line = line.strip()
                 if line:
-                    key, value = map(str.strip, line.split(':', 1))
+                    try:
+                        key, value = map(str.strip, line.split(':', 1))
+                    except:
+                        key = line
+                        value = line
                     if line.startswith('--'):
                         key = list(key)
                         key[0] = ""
                         key[1] = ""
                         key = "".join(key)
+                        if statement == True or array == True:
+                            value = list(value)
+                            value[0] = ""
+                            value[1] = ""
+                            value = "".join(value)
+                        key = __get(key, data, var)
                         value = __get(value, data, var) if statement == False else value
                         if value == "INPUT":
                             value = __get(raw_input(key + '> '), data, var)
@@ -106,16 +118,16 @@ def __ld(filename, var):
                             data[main_key].append(value)
                         elif statement == False:
                             data[main_key].append(value)
-                        elif statement == True:
+                        elif statement == True and var == True:
                             i = []
                             word = ""
                             end = 0
                             for c in value:
-                                if __isOperator(c) == True:
+                                if __isOperator(c, var) == True:
                                     if word != "":
                                         i.append(__get(word, data, var))
                                         word = ""
-                                    i.append(c)                                    
+                                    i.append(c)
                                 elif c != ' ':
                                     word = word + c
                             if word != "":
@@ -128,7 +140,7 @@ def __ld(filename, var):
                             for c in new:
                                 next = i + 1
                                 last = i - 1
-                                if __isOperator(c) == True:
+                                if __isOperator(c, var) == True:
                                     if first == True:
                                         num = OPERATORS[c](__ch(new, last),__ch(new, next))
                                         first = False
@@ -136,7 +148,10 @@ def __ld(filename, var):
                                         num = OPERATORS[c](num,__ch(new, next))
                                 i += 1
                             data[main_key] = num
+                        elif statement == True and var == False:
+                            data[main_key] = value
                     elif value != "":
+                        key = __get(key, data, var)
                         value = __get(value, data, var)
                         if key == "PRINT":
                             print value
@@ -151,28 +166,37 @@ def __ld(filename, var):
                         statement = False
                         try:
                             k = key.split(" ", 1)
-                            main_key = k[1]
+                            main_key = __get(k[1], data, var)
                             if k[0] == "ARRAY":
-                                data[k[1]] = []
+                                data[main_key] = []
                                 array = True
                             elif k[0] == "DICT":
-                                data[k[1]] = {}
+                                data[main_key] = {}
                             elif k[0] == "STATE":
-                                data[k[1]] = ""
+                                data[main_key] = ""
                                 statement = True
                         except:
-                            key = key
+                            key = __get(key, data, var)
                             data[key] = {}
                     last_line = line
             yield data
 def load(filename, VARS=True):
     for section in __ld(filename, VARS):
         return section
-def dump(data, filename):
+def __iS(statement):
+    try:
+        for s in statement:
+            if __isOperator(s, True) == True:
+                return True
+    except:
+        dn = ""
+    return False    
+def _____________dump(data, filename):
     text = ""
     for d in data:
         isDict = __isIN(data[d], dict)
         isArray = isinstance(data[d], (list, tuple))
+        isStatement = __iS(data[d])
         if isDict == True:
             text += "DICT " + d + ":\n"
             for dd in data[d]:
@@ -180,7 +204,9 @@ def dump(data, filename):
         elif isArray == True:
             text += "ARRAY " + d + ":\n"
             for dd in data[d]:
-                text += "--:" + str(dd) + "\n"
+                text += "--" + str(dd) + "\n"
+        elif isStatement == True:
+            text += "STATE " + d + ":\n--" + data[d] + "\n" 
         else:
             text += d + ":" + str(data[d])
         text += "\n"
