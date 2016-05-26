@@ -32,6 +32,7 @@ Example:
 key:value
 key2:%key
 ```
+**Would give key2 the value of key**
 **FOR DICTS**
 ```
 DICT user:
@@ -53,7 +54,7 @@ current_number:%numbers.0
 ```
 *"current_number" would then equal "zero"*
 *Config is 0 indexed so in an ARRAY, the first member of the ARRAY has an id of 0 the next member has an id of 1 and so on*
-**Would give key2 the value of key**
+
 ##For more **INFO** check the "config.cfg" file
 ```
 # entry 1
