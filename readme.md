@@ -8,11 +8,13 @@ DICT keyname:
 --key:value
 ```
 **To create an Array/List, first put the keyname and then -- on every line below the keyname you want in the Array. (you can't skip a line)**
+Example:
 ```
 ARRAY keyname:
 --:value
 ```
 **To state something (math or string), first put the keyname and then -- on a line below the keyname (you can't skip a line)**
+Example:
 ```
 STATE keyname:
 --:6 * 7
@@ -26,6 +28,17 @@ Note: *it is best to user variables when adding strings together since spaces wi
         *: multiplies numbers
         /: divides numbers
         ^: to the power of
+**To print something first put PRINT then what you want to print**
+Example:
+```
+PRINT:what you want to print
+```
+**To get Input from the user put the keyname then INPUT after**
+Example:
+```
+name:INPUT
+```
+*Note: You can't put any other text with INPUT or it won't recognize it as a prompt for the user*
 **To use a variable put a % sign in front of the value**
 Example:
 ```
