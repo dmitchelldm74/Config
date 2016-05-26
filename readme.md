@@ -12,12 +12,47 @@ DICT keyname:
 ARRAY keyname:
 --:value
 ```
-**To make a variable put a % sign in front of the value**
+**To state something (math or string), first put the keyname and then -- on a line below the keyname (you can't skip a line)**
+```
+STATE keyname:
+--:6 * 7
+STATE keyname:
+--:%string1 + %string2
+```
+Note: *it is best to user variables when adding strings together since spaces will be messed up*
+#Valid Signs:
+        +: adds numbers together
+        -: subtracts numbers
+        *: multiplies numbers
+        /: divides numbers
+        ^: to the power of
+**To use a variable put a % sign in front of the value**
 Example:
 ```
 key:value
 key2:%key
 ```
+**FOR DICTS**
+```
+DICT user:
+--name:Daniel
+--password:****
+--email:dmitchell.dm74@gmail.com
+current_user:%user.name
+```
+*"current_user" would then equal "Daniel"*
+**FOR ARRAYS**
+```
+ARRAY numbers:
+--:zero
+--:one
+--:two
+--:three
+--:four
+current_number:%numbers.0
+```
+*"current_number" would then equal "zero"*
+*Config is 0 indexed so in an ARRAY, the first member of the ARRAY has an id of 0 the next member has an id of 1 and so on*
 **Would give key2 the value of key**
 ##For more **INFO** check the "config.cfg" file
 ```
@@ -27,12 +62,21 @@ VOLUME:0.1001
 DICT CONTENT:
 --l1:the volume is %VOLUME
 --l2:%VOLUME
-#is a comment
 ARRAY arr:
 --:Item
 --:%ID
 not:in %CONTENT.l1
 another:%arr.1
+test:INPUT
+PRINT:hello, %CONTENT.l1
+STATE a:
+--:%ID + %VOLUME
+STATE b:
+--:%ID + %ID ^ 3
+STATE c:
+--:80 * 34 / 2
+STATE d:
+--:80 - 79
 ```
 
 ## When using python there is a module to load data (config.py) AN EXAMPLE USAGE IS LOCATED IN "test.py"
