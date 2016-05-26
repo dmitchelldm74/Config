@@ -24,8 +24,17 @@ def __get(i, data, var):
                         l[0] = ""
                         l = "".join(l)
                         if "." in l:
-                            varn = l.rsplit(".", 1)
-                            t = data[varn[0]][__get(varn[1], data, var)]
+                            varn = l.split(".")
+                            num = 0
+                            t = data[__get(varn[num], data, var)]
+                            while num != len(varn) - 1:
+                                num += 1
+                                try:
+                                    t = t[__get(varn[num], data, var)]
+                                except:
+                                    print "ERROR, ITEM DOESN'T EXIST"
+                                    break
+                                
                         else:
                             t = data[l]
                         if len(i) == 1:
@@ -138,6 +147,8 @@ def __ld(filename, var):
                         array = False
                         statement = False
                     else:
+                        array = False
+                        statement = False
                         try:
                             k = key.split(" ", 1)
                             main_key = k[1]
