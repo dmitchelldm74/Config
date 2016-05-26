@@ -24,9 +24,15 @@ key2:%key
 # entry 1
 ID:01
 VOLUME:0.1001
-CONTENT:
+DICT CONTENT:
 --l1:the volume is %VOLUME
 --l2:%VOLUME
+#is a comment
+ARRAY arr:
+--:Item
+--:%ID
+not:in %CONTENT.l1
+another:%arr.1
 ```
 
 ## When using python there is a module to load data (config.py) AN EXAMPLE USAGE IS LOCATED IN "test.py"
