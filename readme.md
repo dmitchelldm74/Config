@@ -4,8 +4,13 @@ Example:```KEY:VALUE```
 **To create a dictionary, first put the keyname and then -- on every line below the keyname you want in the dict. (you can't skip a line)**
 Example:
 ```
-keyname:
+DICT keyname:
 --key:value
+```
+**To create an Array/List, first put the keyname and then -- on every line below the keyname you want in the Array. (you can't skip a line)**
+```
+ARRAY keyname:
+--:value
 ```
 **To make a variable put a % sign in front of the value**
 Example:

@@ -22,10 +22,15 @@ def __get(i, data, var):
                         l = list(l)
                         l[0] = ""
                         l = "".join(l)
-                        if len(i) == 1:
-                            ni.append(data[l])
+                        if "." in l:
+                            varn = l.rsplit(".", 1)
+                            t = data[varn[0]][__get(varn[1], data, var)]
                         else:
-                            ni.append(str(data[l]))  
+                            t = data[l]
+                        if len(i) == 1:
+                            ni.append(t)
+                        else:
+                            ni.append(str(t))  
                     except:
                         ni.append("%" + l)
                 else:
@@ -43,6 +48,7 @@ def __ld(filename, var):
             main_key = ""
             block = ""
             last_line = ""
+            array = False
             for line in infile:
                 line = line.strip()
                 if line:
@@ -52,12 +58,28 @@ def __ld(filename, var):
                         key[0] = ""
                         key[1] = ""
                         key = "".join(key)
-                        data[main_key][key] = __get(value, data, var)
+                        if array == False:
+                            data[main_key][key] = __get(value, data, var)
+                        elif len(key) > 0:
+                            data[main_key].append(__get(key, data, var))
+                        else:
+                            data[main_key].append(__get(value, data, var))
                     elif value != "":
                         data[key] = __get(value, data, var)
+                        array = False
                     else:
-                        main_key = key				
-                        data[key] = {}
+                        try:
+                            k = key.split(" ", 1)
+                            main_key = k[1]
+                            if k[0] == "ARRAY":
+                                data[k[1]] = []
+                                array = True
+                            elif k[0] == "DICT":
+                                data[k[1]] = {}
+                                array = False
+                        except:
+                            key = key
+                            data[key] = {}
                     last_line = line
             yield data
 def load(filename, VARS=True):
@@ -67,10 +89,15 @@ def dump(data, filename):
     text = ""
     for d in data:
         isDict = __isIN(data[d], dict)
+        isArray = isinstance(data[d], (list, tuple))
         if isDict == True:
-            text += d + ":" + "\n"
+            text += "DICT " + d + ":\n"
             for dd in data[d]:
                 text += "--" + dd + ":" + str(data[d][dd]) + "\n"
+        elif isArray == True:
+            text += "ARRAY " + d + ":\n"
+            for dd in data[d]:
+                text += "--:" + str(dd) + "\n"
         else:
             text += d + ":" + str(data[d])
         text += "\n"
